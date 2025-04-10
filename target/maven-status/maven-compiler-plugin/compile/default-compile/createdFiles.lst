@@ -1,0 +1,6 @@
+net\azisaba\life\CommandHandler.class
+net\azisaba\life\LanguageManager.class
+net\azisaba\life\CraftGUI.class
+net\azisaba\life\MessageFormatter.class
+net\azisaba\life\MessageUtil.class
+net\azisaba\life\ConfigManager.class

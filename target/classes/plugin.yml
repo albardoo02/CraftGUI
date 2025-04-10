@@ -1,0 +1,15 @@
+name: CraftGUI
+version: '1.0-SNAPSHOT'
+main: net.azisaba.life.CraftGUI
+api-version: '1.15'
+authors: [albardoo02]
+description: 新しいCraftGUIプラグイン
+commands:
+  rgui:
+    aliases:
+      - ragui
+      - compress
+      - compressgui
+      - assyuku
+      - assyukugui
+      - craftgui

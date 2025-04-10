@@ -1,0 +1,5 @@
+# Config Version
+configVersion: 1.0
+
+# 言語ファイルを格納するフォルダ名
+language-directory: "lang"
