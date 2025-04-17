@@ -4,6 +4,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Locale;
 
 public class CraftGUI extends JavaPlugin {
 
@@ -11,10 +12,12 @@ public class CraftGUI extends JavaPlugin {
     private FileConfiguration itemsConfig;
     private LanguageManager languageManager;
     private MessageUtil messageUtil;
+    private Locale defaultLocale;
+    private GuiHandler guiHandler;
 
     @Override
     public void onEnable() {
-        languageManager = new LanguageManager(this);
+        languageManager = new LanguageManager(this, defaultLocale);
         messageUtil = new MessageUtil(this, languageManager);
         configManager = new ConfigManager(this);
 
@@ -36,7 +39,9 @@ public class CraftGUI extends JavaPlugin {
         itemsConfig = YamlConfiguration.loadConfiguration(itemsFile);
 
         this.getLogger().info("CraftGUI has been enabled");
-        this.getCommand("craftgui").setExecutor(new CommandHandler(this, messageUtil, configManager));
+        this.guiHandler = new GuiHandler(this, messageUtil);
+        this.getServer().getPluginManager().registerEvents(guiHandler, this);
+        this.getCommand("craftgui").setExecutor(new CommandHandler(this, messageUtil, configManager, languageManager, guiHandler));
     }
 
     @Override

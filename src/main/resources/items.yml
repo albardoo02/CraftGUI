@@ -1,1 +1,32 @@
 test: "this is test"
+
+
+# GUIに登録するアイテム一覧
+Items:
+  # ページ番号
+  page1:
+    # スロット番号
+    slot1:
+      # MythicMobsアイテムかどうか
+      # true:MythicMobsアイテム
+      # false:バニラアイテム
+      IsMythicMobsItem: true
+      # アイテムID
+      Material: 'diamond'
+      # アイテムの表示名
+      # MythicMobsアイテムであればそのカラーコードを&ではなく§で登録する
+      DisplayName: '§b輝くダイヤモンド'
+      # Loresで設定したLore名を登録する
+      Lore: 'CommonLore'
+      # 1回圧縮するのに必要な数
+      NeedAmount: 9
+      # 圧縮後に付与するMythicMobsのアイテムID
+      GiveMythicMobsItemID: diamond_block
+  page2:
+    slot1:
+      Material:
+
+Lores:
+  CommonLore:
+    - '1行目'
+    - '2行目'

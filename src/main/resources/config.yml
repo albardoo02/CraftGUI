@@ -3,3 +3,7 @@ configVersion: 1.0
 
 # 言語ファイルを格納するフォルダ名
 language-directory: "lang"
+
+# Set default player send message language
+# You can use ja-JP or en-US
+default-language: "ja-JP"

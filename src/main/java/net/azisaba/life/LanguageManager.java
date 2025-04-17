@@ -12,15 +12,23 @@ public class LanguageManager {
 
     private final CraftGUI plugin;
     private final Map<Locale, YamlConfiguration> languageFiles = new HashMap<>();
-    private final Locale defaultLocale = Locale.JAPAN;
+    private final Locale defaultLocale;
     private final String languageDirectory;
     private final MessageFormatter messageFormatter = new MessageFormatter();
 
-    public LanguageManager(CraftGUI plugin) {
+    public LanguageManager(CraftGUI plugin, Locale defaultLocale) {
         this.plugin = plugin;
         this.languageDirectory = plugin.getConfig().getString("language-directory", "lang");
         loadLanguageFiles();
         registerPlaceholders();
+        reloadConfiguration();
+
+        String localeConfig = plugin.getConfig().getString("default-language");
+        if (localeConfig == null) {
+            this.defaultLocale = Locale.JAPAN;
+        } else {
+            this.defaultLocale = Locale.forLanguageTag(localeConfig);
+        }
     }
 
     private void loadLanguageFiles() {
@@ -31,7 +39,7 @@ public class LanguageManager {
 
         File defaultLangFile = new File(langDir, defaultLocale.toString().replace("_", "-") + ".yml");
         if (!defaultLangFile.exists()) {
-            plugin.saveResource("lang/" + defaultLocale.toString().replace("_", "-") + ".yml", false);
+            plugin.saveResource(languageDirectory + defaultLocale.toString().replace("_", "-") + ".yml", false);
         }
         languageFiles.put(defaultLocale, YamlConfiguration.loadConfiguration(defaultLangFile));
 
@@ -45,9 +53,9 @@ public class LanguageManager {
                 try {
                     Locale locale = Locale.forLanguageTag(localeCode);
                     languageFiles.put(locale, YamlConfiguration.loadConfiguration(file));
-                    plugin.getLogger().info(fileName + "を読み込みました");
+                    plugin.getLogger().info("言語ファイル" + fileName + "を読み込みました");
                 } catch (IllegalArgumentException e) {
-                    plugin.getLogger().warning("不正なロケールコードのファイルが見つかりました: " + fileName);
+                    plugin.getLogger().warning("不正なロケールコードの言語ファイルが見つかりました: " + fileName);
                 }
                 plugin.getLogger().info("");
             }
@@ -57,7 +65,7 @@ public class LanguageManager {
     public String getMessage(Player player, String key, Object... args) {
         Locale locale = (player != null) ? getPlayerLocale(player) : defaultLocale;
         YamlConfiguration langFile = languageFiles.getOrDefault(locale, languageFiles.get(defaultLocale));
-        String messageFormat = langFile.getString(key, "Could not find message key: " + key);
+        String messageFormat = langFile.getString(key, "言語ファイルにメッセージの項目が見つかりませんでした: " + key);
         return messageFormatter.format(messageFormat, player, args);
     }
 
